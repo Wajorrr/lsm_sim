@@ -1,0 +1,21 @@
+#!/bin/bash
+
+source scripts/top-apps
+apps="$top3"
+source scripts/app-sizes
+
+weights="65536 131072 196608"
+steal_lst=$(echo $weights | sed "s/ /,/g")
+
+rm stealweight-*.data
+
+./lsm-sim \
+  -a $app_lst \
+  -p multi \
+  -E normal \
+  -s $total_size \
+  -S $((1024 * 1024)) \
+  -W $steal_lst \
+  -f ./data/m.cap.out \
+      2> err-stealweight.log \
+      > stealweight.data

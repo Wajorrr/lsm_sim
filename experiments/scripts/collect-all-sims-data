@@ -1,0 +1,13 @@
+#!/bin/bash
+
+cat lru*.data lsm*.data slab*.data | awk '
+
+  /^app / {
+    if (!header_printed) { print $0 }
+    header_printed = 1
+    next
+  }
+
+  { print $0 }
+
+'

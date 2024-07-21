@@ -1,0 +1,11 @@
+lsm-sim
+*.o
+data
+results
+*.csv
+*.xlsx
+*.DS_Store./data
+*.data
+/trace_script/output
+*.log
+*.txt
