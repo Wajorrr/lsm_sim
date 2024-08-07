@@ -8,6 +8,7 @@
 #include <memory>
 #include <unordered_map>
 
+// slab缓存，并支持多应用负载场景
 class slab_multi : public Policy
 {
 public:

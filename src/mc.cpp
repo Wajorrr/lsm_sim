@@ -14,6 +14,7 @@ static const size_t item_size_max = 1024 * 1024;
 
 typedef uint32_t rel_time_t;
 
+// item结构体，表示一个缓存项
 typedef struct _stritem
 {
     /* Protected by LRU locks */
@@ -45,6 +46,7 @@ typedef struct _stritem
     /* then data with terminating \r\n (no terminating null; it's binary!) */
 } item;
 
+// slab class结构体
 typedef struct
 {
     unsigned int size;    /* sizes of items */

@@ -6,6 +6,7 @@
 #include "lru.h"
 #include "mc.h"
 
+// slab缓存，并支持多应用负载场景
 slab_multi::application::application(
     size_t appid,
     size_t min_mem_pct,

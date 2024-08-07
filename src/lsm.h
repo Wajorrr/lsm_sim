@@ -9,6 +9,8 @@
 #ifndef LSM_H
 #define LSM_H
 
+// 日志结构缓存策略，包含对象和段，对象按日志追加到段中，并需要进行GC
+// 实现了基于GC的驱逐，每次选取n个段，保留n-1个段的对象
 class lsm : public Policy
 {
 private:

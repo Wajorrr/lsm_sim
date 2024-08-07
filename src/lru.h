@@ -5,6 +5,7 @@
 #include <list>
 #include "policy.h"
 
+// LRU缓存策略
 class LRU : public Policy
 {
 

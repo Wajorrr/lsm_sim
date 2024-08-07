@@ -4,34 +4,37 @@
 #include "common.h"
 
 fifo::fifo(stats stat)
-  : Policy{stat}
-  , current_size{}
-  , hash{}
-  , queue{}
+    : Policy{stat}, current_size{}, hash{}, queue{}
 {
 }
 
-fifo::~fifo () {
+fifo::~fifo()
+{
 }
 
 // checks the hashmap for membership, if the key is found
 // returns a hit, otherwise the key is added to the hash
 // and to the FIFO queue and returns a miss.
-size_t fifo::process_request(const Request *r, bool warmup) {
+size_t fifo::process_request(const Request *r, bool warmup)
+{
   if (!warmup)
     ++stat.accesses;
-  
+
   // Keep track of initial condition of cache.
   int64_t init_bytes = current_size;
 
   auto it = hash.find(r->kid);
-  if (it != hash.end()) {
-    Request* prior_request = it->second;
-    if (prior_request->size() == r->size()) {
+  if (it != hash.end())
+  {
+    Request *prior_request = it->second;
+    if (prior_request->size() == r->size()) // 请求大小与对象大小相同
+    {
       if (!warmup)
         ++stat.hits;
       return 0;
-    } else {
+    }
+    else // 对象大小有变化，更新
+    {
       // Size has changed. Even though it is in cache it must have already been
       // evicted or shotdown. Since then it must have already been replaced as
       // well. This means that there must have been some intervening get miss
@@ -48,7 +51,9 @@ size_t fifo::process_request(const Request *r, bool warmup) {
   }
 
   // Throw out enough junk to make room for new record.
-  while (stat.global_mem - current_size < uint32_t(r->size())) {
+  // 驱逐
+  while (stat.global_mem - current_size < uint32_t(r->size()))
+  {
     // If the queue is already empty, then we are in trouble. The cache
     // just isn't big enough to hold this object under any circumstances.
     // Though, you probably shouldn't be setting the cache size smaller
@@ -56,17 +61,18 @@ size_t fifo::process_request(const Request *r, bool warmup) {
     if (queue.empty())
       return 0;
 
-    Request* victim = &queue.back();
+    Request *victim = &queue.back();
     current_size -= victim->size();
     hash.erase(victim->kid);
     queue.pop_back();
   }
 
+  // 插入新对象
   // Add the new Request.
   queue.emplace_front(*r);
   hash[r->kid] = &queue.front();
   current_size += r->size();
- 
+
   // Count this Request as a hit.
   if (!warmup)
     ++stat.hits;
@@ -75,9 +81,10 @@ size_t fifo::process_request(const Request *r, bool warmup) {
   return current_size - init_bytes;
 }
 
-size_t fifo::get_bytes_cached() const {
+size_t fifo::get_bytes_cached() const
+{
   size_t cached = 0;
-  for (const auto& r: queue)
+  for (const auto &r : queue)
     cached += r.size();
   return cached;
 }

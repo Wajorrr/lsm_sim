@@ -9,43 +9,55 @@
 #ifndef HIT_RATE_CURVE_H
 #define HIT_RATE_CURVE_H
 
-class hit_rate_curve {
- public:
+class hit_rate_curve
+{
+public:
   static constexpr size_t MAX_DISTANCE = 1lu * 1024 * 1024 * 1024;
   hit_rate_curve()
-    : distances{}
-    , too_big_hit{}
-    , misses{}
+      : distances{}, too_big_hit{}, misses{}
   {
   }
 
-  void hit(size_t distance) {
-    if (distance >= MAX_DISTANCE) {
+  // 记录一次访问的重用距离
+  void hit(size_t distance)
+  {
+    // 重用距离过大
+    if (distance >= MAX_DISTANCE)
+    {
       ++too_big_hit;
       return;
     }
 
+    // 容器扩容
     if (distances.size() < distance + 1)
       distances.resize(distance + 1, 0);
 
+    // 记录重用距离出现次数
     ++(distances.at(distance));
   }
 
-  void miss() {
+  void miss()
+  {
     ++misses;
   }
 
-  void dump() const {
+  // 输出每个重用距离的出现次数
+  void dump() const
+  {
     for (size_t i = 0; i < distances.size(); ++i)
       std::cout << distances[i] << " ";
   }
 
-  void dump_readable() const {
+  // 输出每个重用距离及其出现次数
+  void dump_readable() const
+  {
     for (size_t i = 0; i < distances.size(); ++i)
       std::cout << "Distance " << i << " Count " << distances[i] << std::endl;
   }
 
-  void dump_cdf(const std::string& filename) const {
+  // 输出每个重用距离的累积分布
+  void dump_cdf(const std::string &filename) const
+  {
     std::ofstream out{filename};
 
     out << "distance cumfrac" << std::endl;
@@ -56,16 +68,19 @@ class hit_rate_curve {
                    too_big_hit +
                    misses;
 
-    size_t accum = 0;
-    for (size_t i = 0; i < distances.size(); ++i) {
+    size_t accum = 0; // 累计数量
+    for (size_t i = 0; i < distances.size(); ++i)
+    {
       size_t delta = distances[i];
       accum += delta;
       if (delta)
-        out << i << " " << float(accum) / total << std::endl;
+        out << i << " " << float(accum) / total << std::endl; // 当前累计百分比
     }
   }
 
-  void merge(const hit_rate_curve& other) {
+  // 合并两个重用距离统计vector
+  void merge(const hit_rate_curve &other)
+  {
     if (distances.size() < other.distances.size())
       distances.resize(other.distances.size());
 

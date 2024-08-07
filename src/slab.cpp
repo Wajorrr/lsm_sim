@@ -6,6 +6,7 @@
 #include "lru.h"
 #include "mc.h"
 
+// slab缓存，每个slab class使用一个LRU
 slab::slab(stats stat)
     : Policy{stat}, slabs{}, slab_for_key{}, slab_count{}, mem_in_use{}
 {

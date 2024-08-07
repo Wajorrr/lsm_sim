@@ -9,21 +9,22 @@
 #include "mc.h"
 
 // policy derived from Cliffhanger paper
-class partslab : public Policy {
-  public:
- 
-    partslab(stats stat);
-    ~partslab();
+// 分区slab
+class partslab : public Policy
+{
+public:
+  partslab(stats stat);
+  ~partslab();
 
-    size_t process_request(const Request *r, bool warmup);
-    size_t get_bytes_cached() const;
-    void log_curves();
+  size_t process_request(const Request *r, bool warmup);
+  size_t get_bytes_cached() const;
+  void log_curves();
 
-    void dump_util(const std::string& filename);
+  void dump_util(const std::string &filename);
 
-  private:
-    std::vector<shadowlru> slabs;
-    hit_rate_curve size_curve;
+private:
+  std::vector<shadowlru> slabs;
+  hit_rate_curve size_curve;
 };
 
 #endif

@@ -11,6 +11,7 @@
  *
  * Individual policies only use subsets of these fields.
  */
+// 统计信息
 struct stats
 {
   /// Policy used for this run.

@@ -9,6 +9,7 @@
 // #include "openssl/sha.h"
 #include <openssl/evp.h>
 
+// 请求结构体，支持读取csv并解析，以及生成哈希值
 Request::Request(const std::string &s)
     : time{}, key_sz{}, val_sz{}, frag_sz{}, kid{}, appid{}, type{}, hit{}
 {

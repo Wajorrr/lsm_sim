@@ -7,6 +7,13 @@
 #include <iomanip>
 #include <cassert>
 
+// 包含
+// 一个optional模板类
+// 一个nullopt常量
+// 一个string_vec类型的别名
+// 一个csv读取函数
+// 一个将数值转换为字符串的函数
+
 #ifndef COMMON_H
 #define COMMON_H
 

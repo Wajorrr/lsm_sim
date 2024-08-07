@@ -4,6 +4,8 @@
 
 #include "lru.h"
 
+// LRU缓存策略
+
 LRU::LRU()
     : Policy{stats{"", {}, 0}}, map{}, queue{}
 {

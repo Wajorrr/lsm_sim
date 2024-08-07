@@ -6,6 +6,7 @@
 
 #include "lsm.h"
 
+// 日志结构缓存策略
 lsm::lsm(stats stat)
     : Policy{stat}, cleaner{cleaning_policy::OLDEST_ITEM}, map{}, head{nullptr}, segments{}, free_segments{}
 {

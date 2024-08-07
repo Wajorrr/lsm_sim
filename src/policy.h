@@ -10,6 +10,7 @@
 #include <iostream>
 
 // abstract base class for plug-and-play policies
+// 缓存策略基类
 class Policy
 {
   struct dump

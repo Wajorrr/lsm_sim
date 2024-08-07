@@ -14,6 +14,7 @@ static const uint32_t PAGE_SIZE = 1000000; // Memcached page bytes
 static const uint16_t MAX_CLASSES = 256;   // Memcached max no of slabs
 static const size_t MAX_SIZE = 5000000;    // Largest KV pair allowed
 
+// 基于slab class的缓存策略，每个slab中使用lru
 class slab : public Policy
 {
 public:

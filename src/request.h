@@ -4,6 +4,7 @@
 #include <cinttypes>
 #include <string>
 
+// 请求结构体
 struct Request
 {
 
